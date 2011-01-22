@@ -1,0 +1,2 @@
+This project was created to describe a number of patterns that can be used with Spring 3.0 to
+implement a browser-friendly post-redirect-get pattern of web application behaviour.
