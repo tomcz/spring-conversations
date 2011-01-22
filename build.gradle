@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
   
-  providedCompile 'javax.servlet:servlet-api:2.5'
+  providedCompile 'org.mortbay.jetty:servlet-api:2.5-20081211'
   
   compile 'org.slf4j:slf4j-api:1.6.1', 'org.slf4j:jcl-over-slf4j:1.6.1', 'ch.qos.logback:logback-classic:0.9.27'
   compile 'org.springframework:org.springframework.web.servlet:3.0.5.RELEASE'
@@ -34,3 +34,19 @@ task(runJetty, dependsOn: ['clean', 'testClasses'], type: JavaExec) {
   classpath = sourceSets.test.runtimeClasspath
   main = 'example.jetty.WebServer'
 }
+
+task(cleanLibs, type: Delete) {
+  delete('lib/')
+}
+
+task(copyRuntimeLibs, type: Copy) {
+  into 'lib/runtime'
+  from configurations.runtime
+}
+
+task(copyBuildtimeLibs, type: Copy) {
+  into 'lib/buildtime'
+  from configurations.testRuntime - configurations.runtime
+}
+
+task(copyToLib, dependsOn: ['cleanLibs', 'copyRuntimeLibs', 'copyBuildtimeLibs'])
