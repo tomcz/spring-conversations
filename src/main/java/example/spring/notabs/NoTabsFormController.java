@@ -44,11 +44,11 @@ public class NoTabsFormController {
 
         ModelAndView mv = new ModelAndView("form");
 
+        mv.addObject("title", "NO TABS");
+
         mv.addObject("formAction", pathTo(getClass()).POST().build());
 
         mv.addAllObjects(conversation.createModel("conversation"));
-
-        mv.addObject("title", "NO TABS");
 
         return mv;
     }

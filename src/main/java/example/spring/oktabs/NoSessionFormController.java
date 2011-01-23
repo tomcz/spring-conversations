@@ -43,8 +43,11 @@ public class NoSessionFormController {
         Conversation conversation = conversationRepository.getOrCreate(id);
 
         ModelAndView mv = new ModelAndView("form");
+
         mv.addObject("title", "OK TABS (no session)");
-        mv.addObject("formAction", pathToSelf(conversation).build());
+
+        mv.addObject("formAction", pathToSelf(conversation).POST().build());
+
         mv.addAllObjects(conversation.createModel("conversation"));
 
         return mv;
