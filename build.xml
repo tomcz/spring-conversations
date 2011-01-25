@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<project name="spring-conversations" default="build" basedir=".">
+
+    <property name="src.dir" location="src/main" />
+    <property name="test.dir" location="src/test" />
+
+    <property name="build.dir" location="build" />
+    <property name="dist.dir" location="${build.dir}/dist" />
+    <property name="report.dir" location="${build.dir}/report" />
+    <property name="compile.dir" location="${build.dir}/compile" />
+
+    <path id="classpath">
+        <fileset dir="${compile.dir}" />
+        <fileset dir="lib/buildtime" />
+        <fileset dir="lib/runtime" />
+    </path>
+
+    <macrodef name="make-jar">
+        <attribute name="srcdir" />
+        <attribute name="jarfile" />
+        <sequential>
+            <mkdir dir="${compile.dir}/classes" />
+            <javac srcdir="@{srcdir}" destdir="${compile.dir}/classes" classpathref="classpath" debug="yes"
+                   includeantruntime="no" />
+            <jar jarfile="${compile.dir}/@{jarfile}" basedir="${compile.dir}/classes" />
+            <delete dir="${compile.dir}/classes" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="unit-test">
+        <attribute name="testdir" />
+        <sequential>
+            <mkdir dir="${report.dir}" />
+            <junit fork="yes" forkmode="once" printsummary="yes" haltonfailure="no" failureproperty="tests.failed">
+                <classpath location="${src.dir}/resources" />
+                <classpath refid="classpath" />
+                <formatter type="xml" />
+                <batchtest if="testcase" todir="${report.dir}">
+                    <fileset dir="@{testdir}">
+                        <include name="**/${testcase}.java" />
+                    </fileset>
+                </batchtest>
+                <batchtest unless="testcase" todir="${report.dir}">
+                    <fileset dir="@{testdir}">
+                        <include name="**/*Test.java" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
+
+    <target name="build"
+            depends="clean,run-tests,make-war"
+            description="Main target to create WAR file." />
+
+    <target name="run-tests"
+            depends="make-jars,run-unit-tests,check-tests"
+            description="Run all tests. Use -Dtestcase=SomeTestClassName to specify a single test." />
+
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+    <target name="make-jars">
+        <make-jar srcdir="${src.dir}/java" jarfile="${ant.project.name}.jar" />
+        <make-jar srcdir="${test.dir}/java" jarfile="${ant.project.name}-tests.jar" />
+    </target>
+
+    <target name="run-unit-tests">
+        <unit-test testdir="${test.dir}/java" />
+    </target>
+
+    <target name="check-tests" if="tests.failed">
+        <junitreport todir="${report.dir}">
+            <fileset dir="${report.dir}" includes="TEST-*.xml" />
+            <report todir="${report.dir}/html" />
+        </junitreport>
+        <fail message="One or more tests failed. Please check the logs for more info." />
+    </target>
+
+    <target name="make-war" depends="make-jars">
+        <mkdir dir="${dist.dir}" />
+        <war warfile="${dist.dir}/${ant.project.name}.war" webxml="src/main/webapp/WEB-INF/web.xml">
+            <fileset dir="src/main/webapp" excludes="**/web.xml" />
+            <lib dir="${compile.dir}" excludes="*-tests.jar" />
+            <classes dir="${src.dir}/resources" />
+            <lib dir="lib/runtime" />
+        </war>
+    </target>
+
+    <target name="run-jetty" depends="clean,make-jars" description="Run application in Jetty.">
+        <java classname="example.jetty.WebServer" fork="true" failonerror="true">
+            <classpath location="${src.dir}/resources" />
+            <classpath refid="classpath" />
+        </java>
+    </target>
+
+    <target name="package-src" depends="clean" description="Create zip of the source code for distribution.">
+        <mkdir dir="${build.dir}" />
+        <zip basedir="${basedir}" destfile="${build.dir}/${ant.project.name}.zip">
+            <exclude name="**/.DS_Store" />
+            <exclude name="build/" />
+            <exclude name="*.iws" />
+            <exclude name=".git/" />
+            <exclude name="out/" />
+        </zip>
+    </target>
+
+</project>
