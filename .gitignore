@@ -4,5 +4,4 @@ reports
 target
 build
 *.iws
-lib
 out
