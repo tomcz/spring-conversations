@@ -13,7 +13,7 @@
 <#list formLinks?keys as key>
     <a href="<@servletUrl formLinks[key] />">${key?html}</a><br>
 </#list>
-    <a href="<@spring.url '/' />">Home</a>
+    <a href="${contextPath}">Home</a>
 </p>
 </body>
 </html>
