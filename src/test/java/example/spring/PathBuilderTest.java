@@ -3,6 +3,7 @@ package example.spring;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.View;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,6 +24,13 @@ public class PathBuilderTest {
                 .build();
 
         assertThat(path, is("/new/success.go?key=val"));
+    }
+
+    @Test
+    public void shouldCreateRedirectToGetHandler() {
+        View view = PathBuilder.pathTo(GetHandler.class).withVar("documentId", "new").redirect();
+        ServletRelativeRedirectView redirect = (ServletRelativeRedirectView) view;
+        assertThat(redirect.getUrl(), is("/new/success.go"));
     }
 
     @Test

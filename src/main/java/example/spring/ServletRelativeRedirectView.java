@@ -15,6 +15,10 @@ public class ServletRelativeRedirectView implements View {
         this.url = url;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
     @Override
     public String getContentType() {
         return null;
