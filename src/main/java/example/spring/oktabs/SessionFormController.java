@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import static example.spring.PathBuilder.pathTo;
 
@@ -54,7 +53,7 @@ public class SessionFormController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public View process(@ModelAttribute("oktabs") Conversation conversation, SessionStatus status) {
+    public Object process(@ModelAttribute("oktabs") Conversation conversation, SessionStatus status) {
         log.info("Processed " + conversation);
 
         if (conversation.validate()) {
@@ -67,6 +66,6 @@ public class SessionFormController {
             return pathTo(OkTabsSuccessController.class).withVar("id", object.getId()).redirect();
         }
 
-        return pathTo(getClass()).withQueryParam(Conversation.CONVERSATION_ID, conversation.getId()).redirect();
+        return new ModelAndView(pathTo(getClass()).redirect(), Conversation.CONVERSATION_ID, conversation.getId());
     }
 }

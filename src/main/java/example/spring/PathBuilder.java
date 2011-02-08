@@ -3,16 +3,12 @@ package example.spring;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 import org.springframework.web.util.UriTemplate;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +17,6 @@ public class PathBuilder {
     private Class handler;
     private String methodName;
     private RequestMethod method;
-    private MultiValueMap<String, String> queryParams;
     private Map<String, String> pathVariables = new HashMap<String, String>();
 
     private PathBuilder(Class handler) {
@@ -52,22 +47,8 @@ public class PathBuilder {
         return this;
     }
 
-    public PathBuilder withQueryParam(String key, Object value) {
-        if (queryParams == null) {
-            queryParams = new LinkedMultiValueMap<String, String>();
-        }
-        queryParams.add(key, ObjectUtils.toString(value));
-        return this;
-    }
-
     public String build() {
-        String path = expandPathVariables(findHandlerClassMapping() + findHandlerMethodMapping());
-        if (queryParams != null) {
-            StringBuilder buf = new StringBuilder(path).append('?');
-            appendQueryParams(buf);
-            return buf.toString();
-        }
-        return path;
+        return expandPathVariables(findHandlerClassMapping() + findHandlerMethodMapping());
     }
 
     public View redirect() {
@@ -114,29 +95,5 @@ public class PathBuilder {
     private String expandPathVariables(String url) {
         UriTemplate template = new UriTemplate(url);
         return template.expand(pathVariables).toString();
-    }
-
-    private void appendQueryParams(StringBuilder buf) {
-        boolean first = true;
-        for (String key : queryParams.keySet()) {
-            for (String value : queryParams.get(key)) {
-                if (first) {
-                    first = false;
-                } else {
-                    buf.append('&');
-                }
-                buf.append(encode(key));
-                buf.append('=');
-                buf.append(encode(value));
-            }
-        }
-    }
-
-    private Object encode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

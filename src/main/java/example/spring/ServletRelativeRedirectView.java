@@ -28,7 +28,6 @@ public class ServletRelativeRedirectView implements View {
     public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getServletPath() + url;
         RedirectView view = new RedirectView(path, true);
-        view.setExposeModelAttributes(false);
         view.render(model, request, response);
     }
 }

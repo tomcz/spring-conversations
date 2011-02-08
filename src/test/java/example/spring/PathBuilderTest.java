@@ -17,16 +17,6 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void shouldCreateLinkWithQueryString() {
-        String path = PathBuilder.pathTo(GetHandler.class)
-                .withVar("documentId", "new")
-                .withQueryParam("key", "val")
-                .build();
-
-        assertThat(path, is("/new/success.go?key=val"));
-    }
-
-    @Test
     public void shouldCreateRedirectToGetHandler() {
         View view = PathBuilder.pathTo(GetHandler.class).withVar("documentId", "new").redirect();
         ServletRelativeRedirectView redirect = (ServletRelativeRedirectView) view;
