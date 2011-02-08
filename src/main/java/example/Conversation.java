@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Conversation extends Validatable {
 
-    public static final String CONVERSATION_ID = "conversationId";
+    public static final String CONVERSATION_ID = "id";
 
     private final String id = UUID.randomUUID().toString();
 

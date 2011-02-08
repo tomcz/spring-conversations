@@ -2,6 +2,7 @@ package example.spring.oktabs.nosession;
 
 import example.Conversation;
 import example.ConversationRepository;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.SessionAttributeStore;
@@ -22,10 +23,17 @@ public class ConversationRepoStore implements SessionAttributeStore {
     }
 
     public Object retrieveAttribute(WebRequest request, String name) {
-        return repository.get(request.getParameter(Conversation.CONVERSATION_ID));
+        String conversationId = request.getParameter(Conversation.CONVERSATION_ID);
+        if (StringUtils.isNotEmpty(conversationId)) {
+            return repository.get(conversationId);
+        }
+        return null;
     }
 
     public void cleanupAttribute(WebRequest request, String name) {
-        repository.remove(request.getParameter(Conversation.CONVERSATION_ID));
+        String conversationId = request.getParameter(Conversation.CONVERSATION_ID);
+        if (StringUtils.isNotEmpty(conversationId)) {
+            repository.remove(conversationId);
+        }
     }
 }
