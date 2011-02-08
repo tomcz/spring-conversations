@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Slideshow</title>
+    <style type="text/css">
+        body {
+            font: 60pt/1.3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            font-size: 0.5em;
+            color: white;
+        }
+        section {
+            margin-top: 3em;
+        }
+    </style>
+    <script type="text/javascript" src="static/js/jquery-1.5.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('section').hide();
+            var section = $('section:first').show();
+            $('body').bind('click keypress', function() {
+                var next = section.next('section');
+                if (next.length > 0) {
+                    section.hide();
+                    next.show();
+                    section = next;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+    <section>
+        Post-Redirect-Get
+    </section>
+    <section>
+        Spring 3.0
+    </section>
+    <section>
+        <a href="index.ftl">https://github.com/tomcz/spring-conversations.git</a>
+    </section>
+</div>
+</body>
+</html>
