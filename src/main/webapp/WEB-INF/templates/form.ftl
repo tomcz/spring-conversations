@@ -4,22 +4,22 @@
 <head>
     <meta charset="utf-8">
     <title>${title}</title>
-    <style type="text/css">
-        .error { color: red; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="${contextPath}/static/css/main.css">
 </head>
 <body>
-<h1>${title}</h1>
-<form action="<@servletUrl formAction />" method="post">
-    <@spring.formHiddenInput "conversation.id" />
-    <p>
-        <label for="value">Value:</label>
-        <@spring.formInput "conversation.value" />
-        <@spring.showErrors "<br>" "error" />
-    </p>
-    <p>
-        <input type="submit" value="Submit">
-    </p>
-</form>
+    <div id="container">
+    <h1>${title}</h1>
+    <form action="<@servletUrl formAction />" method="post">
+        <@spring.formHiddenInput "conversation.id" />
+        <p>
+            <label for="value">Value:</label>
+            <@spring.formInput "conversation.value" />
+            <@spring.showErrors "<br>" "error" />
+        </p>
+        <p>
+            <input type="submit" value="Submit">
+        </p>
+    </form>
+</div>
 </body>
 </html>
