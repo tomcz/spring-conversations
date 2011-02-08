@@ -2,9 +2,13 @@ package example;
 
 public interface ConversationRepository {
 
-    Conversation getOrCreate(String id);
-
     void set(Conversation conversation);
 
+    Conversation get(String id);
+
+    Conversation getOrCreate(String id);
+
     void remove(Conversation conversation);
+
+    void remove(String id);
 }

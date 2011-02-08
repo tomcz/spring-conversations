@@ -1,4 +1,4 @@
-package example.spring.oktabs.sessionfree;
+package example.spring.oktabs.restful;
 
 import example.Conversation;
 import example.ConversationRepository;
@@ -27,8 +27,8 @@ import javax.servlet.ServletRequest;
 import static example.spring.PathBuilder.pathTo;
 
 @Controller
-@RequestMapping("/sessionfree/form/{id}")
-public class SessionFreeFormController {
+@RequestMapping("/form/{id}")
+public class RestfulFormController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -36,8 +36,8 @@ public class SessionFreeFormController {
     private final DomainObjectRepository domainRepository;
 
     @Autowired
-    public SessionFreeFormController(ConversationRepository conversationRepository,
-                                     DomainObjectRepository domainRepository) {
+    public RestfulFormController(ConversationRepository conversationRepository,
+                                 DomainObjectRepository domainRepository) {
 
         this.conversationRepository = conversationRepository;
         this.domainRepository = domainRepository;
@@ -51,7 +51,7 @@ public class SessionFreeFormController {
 
         ModelAndView mv = new ModelAndView("form");
 
-        mv.addObject("title", "OK TABS (no session)");
+        mv.addObject("title", "OK TABS (restful)");
 
         mv.addObject("formAction", pathToSelf(conversation).POST().build());
 

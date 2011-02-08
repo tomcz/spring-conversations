@@ -15,7 +15,19 @@
     </servlet>
 
     <servlet>
-        <servlet-name>oktabs</servlet-name>
+        <servlet-name>oktabs-session</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>oktabs-nosession</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>oktabs-restful</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -44,8 +56,18 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>oktabs</servlet-name>
-        <url-pattern>/oktabs/*</url-pattern>
+        <servlet-name>oktabs-session</servlet-name>
+        <url-pattern>/oktabs-session/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>oktabs-nosession</servlet-name>
+        <url-pattern>/oktabs-nosession/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>oktabs-restful</servlet-name>
+        <url-pattern>/oktabs-restful/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
