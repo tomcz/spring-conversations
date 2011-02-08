@@ -17,7 +17,8 @@
             <@spring.showErrors "<br>" "error" />
         </p>
         <p>
-            <input type="submit" value="Submit">
+            <input type="submit" name="submit" value="Submit">
+            <input type="submit" name="cancel" value="Cancel">
         </p>
     </form>
 </div>

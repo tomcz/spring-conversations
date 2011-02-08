@@ -3,6 +3,7 @@ package example.spring.notabs;
 import example.Conversation;
 import example.DomainObject;
 import example.DomainObjectRepository;
+import example.spring.success.SuccessController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static example.spring.PathBuilder.pathTo;
 
@@ -55,8 +57,16 @@ public class NoTabsFormController {
 
     @RequestMapping(method = RequestMethod.POST)
     public View process(@ModelAttribute("notabs") Conversation conversation, SessionStatus status) {
-        log.info("Processed " + conversation);
 
+        if (conversation.isCancelled()) {
+            log.info("Cancelled " + conversation);
+
+            status.setComplete();
+
+            return new RedirectView("/", true);
+        }
+
+        log.info("Processing " + conversation);
         if (conversation.validate()) {
 
             DomainObject object = conversation.createDomainObject();
@@ -64,7 +74,7 @@ public class NoTabsFormController {
 
             status.setComplete();
 
-            return pathTo(NoTabsSuccessController.class).withVar("id", object.getId()).redirect();
+            return pathTo(SuccessController.class).withVar("id", object.getId()).redirect();
         }
 
         return pathTo(getClass()).redirect();

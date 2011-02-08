@@ -1,8 +1,9 @@
-package example.spring.oktabs;
+package example.spring.oktabs.session;
 
 import example.Conversation;
 import example.DomainObject;
 import example.DomainObjectRepository;
+import example.spring.success.SuccessController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static example.spring.PathBuilder.pathTo;
 
 @Controller
-@RequestMapping("/form")
 @SessionAttributes("oktabs")
+@RequestMapping("/session/form")
 public class SessionFormController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -54,8 +56,16 @@ public class SessionFormController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Object process(@ModelAttribute("oktabs") Conversation conversation, SessionStatus status) {
-        log.info("Processed " + conversation);
 
+        if (conversation.isCancelled()) {
+            log.info("Cancelled " + conversation);
+
+            status.setComplete();
+
+            return new RedirectView("/", true);
+        }
+
+        log.info("Processing " + conversation);
         if (conversation.validate()) {
 
             DomainObject object = conversation.createDomainObject();
@@ -63,7 +73,7 @@ public class SessionFormController {
 
             status.setComplete();
 
-            return pathTo(OkTabsSuccessController.class).withVar("id", object.getId()).redirect();
+            return pathTo(SuccessController.class).withVar("id", object.getId()).redirect();
         }
 
         return new ModelAndView(pathTo(getClass()).redirect(), Conversation.CONVERSATION_ID, conversation.getId());

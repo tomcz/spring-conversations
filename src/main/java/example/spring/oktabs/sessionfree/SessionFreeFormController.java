@@ -1,10 +1,13 @@
-package example.spring.oktabs;
+package example.spring.oktabs.sessionfree;
 
 import example.Conversation;
 import example.ConversationRepository;
 import example.DomainObject;
 import example.DomainObjectRepository;
 import example.spring.PathBuilder;
+import example.spring.success.SuccessController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -17,21 +20,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.ServletRequest;
 
 import static example.spring.PathBuilder.pathTo;
 
 @Controller
-@RequestMapping("/alternate/form/{id}")
-public class NoSessionFormController {
+@RequestMapping("/sessionfree/form/{id}")
+public class SessionFreeFormController {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ConversationRepository conversationRepository;
     private final DomainObjectRepository domainRepository;
 
     @Autowired
-    public NoSessionFormController(ConversationRepository conversationRepository,
-                                   DomainObjectRepository domainRepository) {
+    public SessionFreeFormController(ConversationRepository conversationRepository,
+                                     DomainObjectRepository domainRepository) {
 
         this.conversationRepository = conversationRepository;
         this.domainRepository = domainRepository;
@@ -41,6 +47,7 @@ public class NoSessionFormController {
     public ModelAndView display(@PathVariable String id) {
 
         Conversation conversation = conversationRepository.getOrCreate(id);
+        log.info("Displaying " + conversation);
 
         ModelAndView mv = new ModelAndView("form");
 
@@ -60,6 +67,15 @@ public class NoSessionFormController {
 
         update(conversation, request);
 
+        if (conversation.isCancelled()) {
+            log.info("Cancelled " + conversation);
+
+            conversationRepository.remove(conversation);
+
+            return new RedirectView("/", true);
+        }
+
+        log.info("Processing " + conversation);
         if (conversation.validate()) {
 
             DomainObject object = conversation.createDomainObject();
@@ -67,7 +83,7 @@ public class NoSessionFormController {
 
             conversationRepository.remove(conversation);
 
-            return pathTo(OkTabsSuccessController.class).withVar("id", object.getId()).redirect();
+            return pathTo(SuccessController.class).withVar("id", object.getId()).redirect();
         }
 
         conversationRepository.set(conversation);

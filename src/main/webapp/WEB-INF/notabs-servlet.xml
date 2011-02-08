@@ -10,6 +10,7 @@
 
     <context:annotation-config />
     <context:component-scan base-package="example.spring.notabs" />
+    <context:component-scan base-package="example.spring.success" />
 
     <bean id="freemarkerConfig"
           class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"

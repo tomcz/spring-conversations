@@ -11,12 +11,9 @@
     <h1>
         Created object with email address: ${object.email?html}
     </h1>
-    <ul>
-        <li><a href="${contextPath}">Home</a></li>
-        <#list formLinks?keys as key>
-        <li><a href="<@servletUrl formLinks[key] />">${key?html}</a></li>
-        </#list>
-    </ul>
+    <p>
+        <a href="${contextPath}">Home</a>
+    </p>
 </div>
 </body>
 </html>

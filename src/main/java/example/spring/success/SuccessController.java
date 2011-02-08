@@ -1,4 +1,4 @@
-package example.spring.oktabs;
+package example.spring.success;
 
 import example.DomainObject;
 import example.DomainObjectRepository;
@@ -9,19 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static example.spring.PathBuilder.pathTo;
-
 @Controller
 @RequestMapping("/success/{id}")
-public class OkTabsSuccessController {
+public class SuccessController {
 
     private final DomainObjectRepository repository;
 
     @Autowired
-    public OkTabsSuccessController(DomainObjectRepository repository) {
+    public SuccessController(DomainObjectRepository repository) {
         this.repository = repository;
     }
 
@@ -32,17 +27,8 @@ public class OkTabsSuccessController {
 
         ModelAndView mv = new ModelAndView("success");
 
-        mv.addObject("formLinks", formLinks());
-
         mv.addObject("object", object);
 
         return mv;
-    }
-
-    public Map<String, String> formLinks() {
-        Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put("New Form (with session)", pathTo(SessionFormController.class).build());
-        map.put("New Form (without session)", pathTo(NoSessionFormController.class).withVar("id", "new").build());
-        return map;
     }
 }

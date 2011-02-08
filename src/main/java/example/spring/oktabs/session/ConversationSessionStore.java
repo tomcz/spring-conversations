@@ -1,4 +1,4 @@
-package example.spring.oktabs;
+package example.spring.oktabs.session;
 
 import example.Conversation;
 import org.apache.commons.lang.StringUtils;
