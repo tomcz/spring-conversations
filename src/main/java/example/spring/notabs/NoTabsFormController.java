@@ -56,7 +56,8 @@ public class NoTabsFormController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public View process(@ModelAttribute("notabs") Conversation conversation, SessionStatus status) {
+    public View process(@ModelAttribute("notabs") Conversation conversation,
+                        SessionStatus status) {
 
         if (conversation.isCancelled()) {
             log.info("Cancelled " + conversation);
@@ -74,7 +75,9 @@ public class NoTabsFormController {
 
             status.setComplete();
 
-            return pathTo(SuccessController.class).withVar("id", object.getId()).redirect();
+            return pathTo(SuccessController.class)
+                    .withVar("id", object.getId())
+                    .redirect();
         }
 
         return pathTo(getClass()).redirect();

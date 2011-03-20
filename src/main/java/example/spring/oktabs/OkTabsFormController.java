@@ -53,7 +53,8 @@ public class OkTabsFormController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Object process(@ModelAttribute("oktabs") Conversation conversation, SessionStatus status) {
+    public Object process(@ModelAttribute("oktabs") Conversation conversation,
+                          SessionStatus status) {
 
         if (conversation.isCancelled()) {
             log.info("Cancelled " + conversation);
@@ -71,9 +72,12 @@ public class OkTabsFormController {
 
             status.setComplete();
 
-            return pathTo(SuccessController.class).withVar("id", object.getId()).redirect();
+            return pathTo(SuccessController.class)
+                    .withVar("id", object.getId())
+                    .redirect();
         }
 
-        return new ModelAndView(pathTo(getClass()).redirect(), Conversation.CONVERSATION_ID, conversation.getId());
+        return new ModelAndView(pathTo(getClass()).redirect(),
+                Conversation.CONVERSATION_ID, conversation.getId());
     }
 }
