@@ -4,6 +4,10 @@
     <property name="src.dir" location="src/main" />
     <property name="test.dir" location="src/test" />
 
+    <property name="lib.dir" location="lib" />
+    <property name="runtime.lib.dir" location="${lib.dir}/runtime/jar" />
+    <property name="buildtime.lib.dir" location="${lib.dir}/buildtime/jar" />
+
     <property name="build.dir" location="build" />
     <property name="dist.dir" location="${build.dir}/dist" />
     <property name="report.dir" location="${build.dir}/report" />
@@ -11,8 +15,8 @@
 
     <path id="classpath">
         <fileset dir="${compile.dir}" />
-        <fileset dir="lib/buildtime" />
-        <fileset dir="lib/runtime" />
+        <fileset dir="${runtime.lib.dir}" />
+        <fileset dir="${buildtime.lib.dir}" />
     </path>
 
     <macrodef name="make-jar">
@@ -60,8 +64,17 @@
     <target name="clean">
         <delete dir="${build.dir}" />
     </target>
+    
+    <target name="fetch-libs" description="Fetch third-party libraries using ivy.">
+        <taskdef resource="org/apache/ivy/ant/antlib.xml">
+            <classpath location="bootstrap/ivy-2.2.0.jar" />
+        </taskdef>
+        <configure />
+        <resolve />
+        <retrieve pattern="${lib.dir}/[conf]/[type]/[artifact]-[revision].[ext]" sync="true" />
+    </target>
 
-    <target name="make-jars">
+    <target name="make-jars" depends="fetch-libs">
         <make-jar srcdir="${src.dir}/java" jarfile="${ant.project.name}.jar" />
         <make-jar srcdir="${test.dir}/java" jarfile="${ant.project.name}-tests.jar" />
     </target>
@@ -84,7 +97,7 @@
             <fileset dir="src/main/webapp" excludes="**/web.xml" />
             <lib dir="${compile.dir}" excludes="*-tests.jar" />
             <classes dir="${src.dir}/resources" />
-            <lib dir="lib/runtime" />
+            <lib dir="${runtime.lib.dir}" />
         </war>
     </target>
 
