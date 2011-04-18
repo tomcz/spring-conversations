@@ -67,7 +67,7 @@
         <taskdef resource="org/apache/ivy/ant/antlib.xml">
             <classpath location="bootstrap/ivy-2.2.0.jar" />
         </taskdef>
-        <configure />
+        <configure file="bootstrap/ivysettings.xml" />
         <resolve />
         <retrieve pattern="lib/[conf]/[type]/[artifact]-[revision].[ext]" sync="true" />
         <fileset id="runtime.libs" dir="lib/runtime/jar" includes="*.jar" />
