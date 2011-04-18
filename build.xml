@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
-<project name="spring-conversations" default="build" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-
-    <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant">
-        <classpath location="bootstrap/maven-ant-tasks-2.1.2.jar" />
-    </typedef>
+<project name="spring-conversations" default="build" basedir=".">
 
     <property name="src.dir" location="src/main" />
     <property name="test.dir" location="src/test" />
@@ -38,7 +34,7 @@
                 <classpath>
                     <pathelement location="${src.dir}/resources" />
                     <fileset dir="${compile.dir}" includes="*.jar" />
-                    <path refid="test.path" />
+                    <path refid="test.classpath" />
                 </classpath>
                 <formatter type="xml" />
                 <batchtest if="testcase" todir="${report.dir}">
@@ -66,17 +62,28 @@
     <target name="clean">
         <delete dir="${build.dir}" />
     </target>
-    
+
     <target name="fetch-libs" description="Fetch third-party libraries.">
-        <artifact:pom id="pom" file="pom.xml" />
-        <artifact:dependencies pomRefId="pom" pathId="test.path" useScope="test" />
-        <artifact:dependencies pomRefId="pom" pathId="compile.path" useScope="compile" />
-        <artifact:dependencies pomRefId="pom" filesetId="runtime.libs" useScope="runtime" />
+        <taskdef resource="org/apache/ivy/ant/antlib.xml">
+            <classpath location="bootstrap/ivy-2.2.0.jar" />
+        </taskdef>
+        <configure />
+        <resolve />
+        <retrieve pattern="lib/[conf]/[type]/[artifact]-[revision].[ext]" sync="true" />
+        <fileset id="runtime.libs" dir="lib/runtime/jar" includes="*.jar" />
+        <path id="compile.classpath">
+            <fileset dir="lib/provided/jar" includes="*.jar" />
+            <fileset refid="runtime.libs" />
+        </path>
+        <path id="test.classpath">
+            <fileset dir="lib/buildtime/jar" includes="*.jar" />
+            <path refid="compile.classpath" />
+        </path>
     </target>
 
     <target name="make-jars" depends="fetch-libs">
-        <make-jar srcdir="${src.dir}/java" jarfile="${ant.project.name}.jar" classpath="compile.path" />
-        <make-jar srcdir="${test.dir}/java" jarfile="${ant.project.name}-tests.jar" classpath="test.path" />
+        <make-jar srcdir="${src.dir}/java" jarfile="${ant.project.name}.jar" classpath="compile.classpath" />
+        <make-jar srcdir="${test.dir}/java" jarfile="${ant.project.name}-tests.jar" classpath="test.classpath" />
     </target>
 
     <target name="run-unit-tests">
@@ -93,21 +100,21 @@
 
     <target name="make-war" depends="make-jars">
         <mkdir dir="${dist.dir}" />
-        <copy todir="${dist.dir}/libs" overwrite="yes" flatten="yes">
-            <fileset refid="runtime.libs" />
-        </copy>
         <war warfile="${dist.dir}/${ant.project.name}.war" webxml="src/main/webapp/WEB-INF/web.xml">
             <fileset dir="src/main/webapp" excludes="**/web.xml" />
             <lib dir="${compile.dir}" excludes="*-tests.jar" />
             <classes dir="${src.dir}/resources" />
-            <lib dir="${dist.dir}/libs" />
+            <lib refid="runtime.libs" />
         </war>
     </target>
 
     <target name="run-jetty" depends="clean,make-jars" description="Run application in Jetty.">
         <java classname="example.jetty.WebServer" fork="true" failonerror="true">
-            <classpath location="${src.dir}/resources" />
-            <classpath refid="classpath" />
+            <classpath>
+                <pathelement location="${src.dir}/resources" />
+                <fileset dir="${compile.dir}" includes="*.jar" />
+                <path refid="test.classpath" />
+            </classpath>
         </java>
     </target>
 

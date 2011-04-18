@@ -5,12 +5,17 @@
     <configurations>
         <conf name="runtime" />
         <conf name="buildtime" />
+        <conf name="provided" />
     </configurations>
 
     <dependencies>
 
-        <dependency org="org.mortbay.jetty" name="jetty" rev="6.1.22" conf="buildtime->default,sources" />
+        <dependency org="javax.servlet" name="servlet-api" rev="2.5" transitive="false" conf="provided->default,sources" />
+
         <dependency org="junit" name="junit" rev="4.8.2" transitive="false" conf="buildtime->default,sources" />
+        <dependency org="org.mortbay.jetty" name="jetty" rev="6.1.22" conf="buildtime->default,sources">
+            <exclude name="servlet-api" />
+        </dependency>
 
         <dependency org="org.hibernate" name="hibernate-validator" rev="4.1.0.Final" conf="runtime->default,sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.16" transitive="false" conf="runtime->default,sources" />
