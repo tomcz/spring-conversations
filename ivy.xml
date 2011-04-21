@@ -30,7 +30,8 @@
             <exclude ext="txt" />
         </dependency>
 
-        <dependency org="org.springframework" name="org.springframework.test" rev="3.0.5.RELEASE" transitive="false" conf="buildtime->runtime">
+        <dependency org="org.springframework" name="org.springframework.test" rev="3.0.5.RELEASE"
+                    transitive="false" conf="buildtime->runtime">
             <exclude ext="txt" />
         </dependency>
 

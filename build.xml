@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
-<project name="spring-conversations" default="build" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-
-    <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant">
-        <classpath location="bootstrap/maven-ant-tasks-2.1.2.jar" />
-    </typedef>
+<project name="spring-conversations" default="build" basedir=".">
 
     <property name="src.dir" location="src/main" />
     <property name="test.dir" location="src/test" />
@@ -66,12 +62,23 @@
     <target name="clean">
         <delete dir="${build.dir}" />
     </target>
-    
+
     <target name="fetch-libs" description="Fetch third-party libraries.">
-        <artifact:pom id="pom" file="pom.xml" />
-        <artifact:dependencies pomRefId="pom" pathId="test.classpath" useScope="test" />
-        <artifact:dependencies pomRefId="pom" pathId="compile.classpath" useScope="compile" />
-        <artifact:dependencies pomRefId="pom" filesetId="runtime.libs" useScope="runtime" />
+        <taskdef resource="org/apache/ivy/ant/antlib.xml">
+            <classpath location="bootstrap/ivy-2.2.0.jar" />
+        </taskdef>
+        <configure file="bootstrap/ivysettings.xml" />
+        <resolve />
+        <retrieve pattern="lib/[conf]/[type]/[artifact]-[revision].[ext]" sync="true" />
+        <fileset id="runtime.libs" dir="lib/runtime/jar" includes="*.jar" />
+        <path id="compile.classpath">
+            <fileset dir="lib/provided/jar" includes="*.jar" />
+            <fileset refid="runtime.libs" />
+        </path>
+        <path id="test.classpath">
+            <fileset dir="lib/buildtime/jar" includes="*.jar" />
+            <path refid="compile.classpath" />
+        </path>
     </target>
 
     <target name="make-jars" depends="fetch-libs">
@@ -93,14 +100,11 @@
 
     <target name="make-war" depends="make-jars">
         <mkdir dir="${dist.dir}" />
-        <copy todir="${dist.dir}/libs" overwrite="yes" flatten="yes">
-            <fileset refid="runtime.libs" />
-        </copy>
         <war warfile="${dist.dir}/${ant.project.name}.war" webxml="src/main/webapp/WEB-INF/web.xml">
-            <classes dir="${src.dir}/resources" />
             <fileset dir="src/main/webapp" excludes="**/web.xml" />
             <lib dir="${compile.dir}" excludes="*-tests.jar" />
-            <lib dir="${dist.dir}/libs" />
+            <classes dir="${src.dir}/resources" />
+            <lib refid="runtime.libs" />
         </war>
     </target>
 
