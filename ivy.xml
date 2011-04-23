@@ -3,8 +3,8 @@
     <info organisation="example" module="spring-conversations" />
 
     <configurations>
-        <conf name="runtime" />
-        <conf name="buildtime" />
+        <conf name="test" />
+        <conf name="compile" />
         <conf name="provided" />
     </configurations>
 
@@ -12,26 +12,26 @@
 
         <dependency org="javax.servlet" name="servlet-api" rev="2.5" transitive="false" conf="provided->default,sources" />
 
-        <dependency org="junit" name="junit" rev="4.8.2" transitive="false" conf="buildtime->default,sources" />
-        <dependency org="org.mortbay.jetty" name="jetty" rev="6.1.22" conf="buildtime->default,sources">
+        <dependency org="junit" name="junit" rev="4.8.2" transitive="false" conf="test->default,sources" />
+        <dependency org="org.mortbay.jetty" name="jetty" rev="6.1.22" conf="test->default,sources">
             <exclude name="servlet-api" />
         </dependency>
 
-        <dependency org="org.hibernate" name="hibernate-validator" rev="4.1.0.Final" conf="runtime->default,sources" />
-        <dependency org="org.freemarker" name="freemarker" rev="2.3.16" transitive="false" conf="runtime->default,sources" />
-        <dependency org="commons-lang" name="commons-lang" rev="2.5" transitive="false" conf="runtime->default,sources" />
+        <dependency org="org.hibernate" name="hibernate-validator" rev="4.1.0.Final" conf="compile->default,sources" />
+        <dependency org="org.freemarker" name="freemarker" rev="2.3.16" transitive="false" conf="compile->default,sources" />
+        <dependency org="commons-lang" name="commons-lang" rev="2.5" transitive="false" conf="compile->default,sources" />
 
-        <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.1" transitive="false" conf="runtime->default,sources" />
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" transitive="false" conf="runtime->default,sources" />
-        <dependency org="ch.qos.logback" name="logback-classic" rev="0.9.27" conf="runtime->default,sources" />
+        <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.1" transitive="false" conf="compile->default,sources" />
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" transitive="false" conf="compile->default,sources" />
+        <dependency org="ch.qos.logback" name="logback-classic" rev="0.9.27" conf="compile->default,sources" />
 
-        <dependency org="org.springframework" name="org.springframework.web.servlet" rev="3.0.5.RELEASE" conf="runtime->runtime">
+        <dependency org="org.springframework" name="org.springframework.web.servlet" rev="3.0.5.RELEASE" conf="compile->runtime">
             <exclude org="org.apache.commons" />
             <exclude ext="txt" />
         </dependency>
 
         <dependency org="org.springframework" name="org.springframework.test" rev="3.0.5.RELEASE"
-                    transitive="false" conf="buildtime->runtime">
+                    transitive="false" conf="test->runtime">
             <exclude ext="txt" />
         </dependency>
 
