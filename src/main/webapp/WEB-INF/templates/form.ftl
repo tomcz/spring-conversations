@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="<@spring.url '/static/css/main.css' />">
 </head>
 <body>
     <div id="container">

@@ -20,6 +20,7 @@
         <dependency org="org.hibernate" name="hibernate-validator" rev="4.1.0.Final" conf="compile->default,sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.16" transitive="false" conf="compile->default,sources" />
         <dependency org="commons-lang" name="commons-lang" rev="2.5" transitive="false" conf="compile->default,sources" />
+        <dependency org="commons-io" name="commons-io" rev="2.0.1" transitive="false" conf="compile->default,sources" />
 
         <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.1" transitive="false" conf="compile->default,sources" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" transitive="false" conf="compile->default,sources" />

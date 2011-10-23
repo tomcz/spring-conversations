@@ -1,5 +1,2 @@
-<#ftl strip_whitespace=true>
-<#import "/spring.ftl" as spring />
-<#assign htmlEscape=true in spring>
-<#assign xhtmlCompliant=false in spring>
+<#import "spring.ftl" as spring />
 <#macro servletUrl url><@spring.url "${servletPath}${url}" /></#macro>

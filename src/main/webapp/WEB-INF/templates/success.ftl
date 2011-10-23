@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Success</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="<@spring.url '/static/css/main.css' />">
 </head>
 <body>
 <div id="container">
@@ -12,7 +12,7 @@
         Created object with email address: ${object.email?html}
     </h1>
     <p>
-        <a href="${contextPath}">Home</a>
+        <a href="<@spring.url '/' />">Home</a>
     </p>
 </div>
 </body>

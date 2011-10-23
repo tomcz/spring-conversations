@@ -1,5 +1,6 @@
 package example.freemarker;
 
+import freemarker.cache.TemplateLoader;
 import freemarker.ext.servlet.FreemarkerServlet;
 import freemarker.template.SimpleHash;
 import freemarker.template.Template;
@@ -7,6 +8,7 @@ import freemarker.template.TemplateModel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class CustomFreemarkerServlet extends FreemarkerServlet {
 
@@ -16,5 +18,10 @@ public class CustomFreemarkerServlet extends FreemarkerServlet {
 
         ((SimpleHash) data).put("base", request.getContextPath());
         return true;
+    }
+
+    @Override
+    protected TemplateLoader createTemplateLoader(String templatePath) throws IOException {
+        return new HtmlTemplateLoader(super.createTemplateLoader(templatePath));
     }
 }
