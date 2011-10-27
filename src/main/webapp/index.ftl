@@ -8,6 +8,7 @@
 <body>
 <div id="container">
     <h1>Spring fun &amp; games</h1>
+    <p><a href="${base}/slideshow.html">slideshow</a></p>
     <p><a href="${base}/notabs/nosession">old school</a></p>
     <p><a href="${base}/notabs/form">tab-unsafe form</a></p>
     <p><a href="${base}/oktabs-session/form">tab-safe form (using HTTP session)</a></p>
