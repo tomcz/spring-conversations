@@ -2,6 +2,7 @@ package example.freemarker;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.ext.servlet.FreemarkerServlet;
+import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
 import freemarker.template.Template;
 import freemarker.template.TemplateModel;
@@ -18,6 +19,13 @@ public class CustomFreemarkerServlet extends FreemarkerServlet {
 
         ((SimpleHash) data).put("base", request.getContextPath());
         return true;
+    }
+
+    @Override
+    protected Configuration createConfiguration() {
+        Configuration configuration = super.createConfiguration();
+        configuration.setTemplateExceptionHandler(new HtmlExceptionHandler());
+        return configuration;
     }
 
     @Override
