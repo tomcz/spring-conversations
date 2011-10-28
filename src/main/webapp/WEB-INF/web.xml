@@ -5,6 +5,10 @@
          version="2.5">
 
     <listener>
+        <listener-class>example.freemarker.FreemarkerLoggingInitialiser</listener-class>
+    </listener>
+
+    <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 

@@ -226,7 +226,6 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/lib/compile/source/commons-lang-2.5.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/compile/source/freemarker-2.3.16.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/compile/source/hibernate-validator-4.1.0.Final.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/compile/source/logback-classic-0.9.27.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/compile/source/slf4j-api-1.6.1.jar!/" />
@@ -241,6 +240,7 @@
         <root url="jar://$PROJECT_DIR$/lib/compile/src/com.springsource.org.aopalliance-sources-1.0.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/compile/src/org.springframework.aop-sources-3.0.5.RELEASE.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/compile/src/org.springframework.asm-sources-3.0.5.RELEASE.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/compile/source/freemarker-2.3.18.jar!/" />
       </SOURCES>
       <jarDirectory url="file://$PROJECT_DIR$/lib/compile/jar" recursive="false" />
     </library>
