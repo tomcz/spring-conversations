@@ -9,6 +9,11 @@
     <property name="report.dir" location="${build.dir}/report" />
     <property name="compile.dir" location="${build.dir}/compile" />
 
+    <property name="ivy.default.ivy.user.dir" value="${user.home}/.ivy2" />
+    <property name="ivy.jar.file" value="${ivy.default.ivy.user.dir}/ivy-2.2.0.jar" />
+    <property name="ivy.jar.source" value="http://repo1.maven.org/maven2/org/apache/ivy/ivy/2.2.0/ivy-2.2.0.jar" />
+    <available file="${ivy.jar.file}" property="ivy.exists" />
+
     <macrodef name="make-jar">
         <attribute name="srcdir" />
         <attribute name="jarfile" />
@@ -63,12 +68,12 @@
         <delete dir="${build.dir}" />
     </target>
 
-    <target name="fetch-libs" description="Fetch third-party libraries.">
+    <target name="fetch-libs" depends="fetch-ivy" description="Fetch third-party libraries.">
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
-            <classpath location="bootstrap/ivy-2.2.0.jar" />
+            <classpath location="${ivy.jar.file}" />
         </taskdef>
         <ivy:configure file="bootstrap/ivysettings.xml" />
-        <ivy:resolve />
+        <ivy:resolve file="ivy.xml" transitive="true" />
         <ivy:retrieve pattern="lib/[conf]/[type]/[artifact]-[revision].[ext]" sync="true" />
         <fileset id="runtime.libs" dir="lib/compile/jar" includes="*.jar" />
         <path id="compile.classpath">
@@ -79,6 +84,11 @@
             <fileset dir="lib/test/jar" includes="*.jar" />
             <path refid="compile.classpath" />
         </path>
+    </target>
+
+    <target name="fetch-ivy" unless="ivy.exists">
+        <mkdir dir="${ivy.default.ivy.user.dir}" />
+        <get src="${ivy.jar.source}" dest="${ivy.jar.file}" />
     </target>
 
     <target name="make-jars" depends="fetch-libs">
