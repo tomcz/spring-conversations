@@ -28,7 +28,6 @@ dependencies {
   compile 'org.springframework:spring-aop:3.0.6.RELEASE'
   compile 'org.springframework:spring-web:3.0.6.RELEASE'
   compile 'org.springframework:spring-core:3.0.6.RELEASE'
-  compile 'org.springframework:spring-jdbc:3.0.6.RELEASE'
   compile 'org.springframework:spring-beans:3.0.6.RELEASE'
   compile 'org.springframework:spring-webmvc:3.0.6.RELEASE'
   compile 'org.springframework:spring-context:3.0.6.RELEASE'

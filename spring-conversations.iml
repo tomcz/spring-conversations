@@ -140,17 +140,6 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-13/filestore/org.springframework/spring-jdbc/3.0.6.RELEASE/jar/a1c6b3faae62dfb76f88e636dbf896990c8aba2d/spring-jdbc-3.0.6.RELEASE.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/artifacts-13/filestore/org.springframework/spring-jdbc/3.0.6.RELEASE/source/63ac92d522f60262142abad5483d4c686621600d/spring-jdbc-3.0.6.RELEASE-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
           <root url="jar://$USER_HOME$/.gradle/caches/artifacts-13/filestore/org.springframework/spring-beans/3.0.6.RELEASE/jar/58481cd52dedd062356a0a62f6e92eb46607fdaf/spring-beans-3.0.6.RELEASE.jar!/" />
         </CLASSES>
         <JAVADOC />
