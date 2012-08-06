@@ -1,52 +1,38 @@
 apply plugin: 'war'
 apply plugin: 'idea'
+apply plugin: 'project-report'
 
 version = '0.1'
 
 defaultTasks 'clean', 'build'
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
-
 repositories {
   mavenCentral()
 }
 
-// I prefer to pick every library that I use
-configurations.all { transitive = false }
+configurations.all {
+  exclude(group: 'commons-logging')
+}
 
 dependencies {
   providedCompile 'javax.servlet:servlet-api:2.5'
 
-  compile 'org.slf4j:slf4j-api:1.6.1'
-  compile 'org.slf4j:jcl-over-slf4j:1.6.1'
-  compile 'ch.qos.logback:logback-core:0.9.27'
-  compile 'ch.qos.logback:logback-classic:0.9.27'
+  compile 'org.slf4j:slf4j-api:1.6.6'
+  compile 'org.slf4j:jcl-over-slf4j:1.6.6'
+  compile 'ch.qos.logback:logback-classic:1.0.6'
 
-  compile 'aopalliance:aopalliance:1.0'
-  compile 'org.springframework:spring-asm:3.0.6.RELEASE'
-  compile 'org.springframework:spring-aop:3.0.6.RELEASE'
-  compile 'org.springframework:spring-web:3.0.6.RELEASE'
-  compile 'org.springframework:spring-core:3.0.6.RELEASE'
-  compile 'org.springframework:spring-beans:3.0.6.RELEASE'
   compile 'org.springframework:spring-webmvc:3.0.6.RELEASE'
-  compile 'org.springframework:spring-context:3.0.6.RELEASE'
-  compile 'org.springframework:spring-expression:3.0.6.RELEASE'
-  compile 'org.springframework:spring-context-support:3.0.6.RELEASE'
-
   compile 'org.hibernate:hibernate-validator:4.1.0.Final'
-  compile 'javax.validation:validation-api:1.0.0.GA'
-
   compile 'org.freemarker:freemarker:2.3.19'
-
-  compile 'commons-collections:commons-collections:3.1'
   compile 'commons-lang:commons-lang:2.5'
   compile 'commons-io:commons-io:2.0.1'
 
   testCompile 'junit:junit:4.8.2'
-  testCompile 'org.mortbay.jetty:jetty:6.1.26'
-  testCompile 'org.mortbay.jetty:jetty-util:6.1.26'
   testCompile 'org.springframework:spring-test:3.0.6.RELEASE'
+
+  testCompile('org.mortbay.jetty:jetty:6.1.26') {
+    exclude(module: 'servlet-api')
+  }
 }
 
 task(jetty, type: JavaExec, dependsOn: 'testClasses') {
