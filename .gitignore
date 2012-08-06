@@ -4,6 +4,8 @@
 reports
 target
 build
+*.ipr
+*.iml
 *.iws
 *.swp
 out
